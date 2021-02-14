@@ -1,13 +1,12 @@
+import 'package:bmi_calculator/results_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'icon_content.dart';
 import 'reusable_card.dart';
 import 'constants.dart';
+import 'results_page.dart';
 
-enum Gender {
-  male,
-  female
-}
+enum Gender { male, female }
 
 class InputPage extends StatefulWidget {
   @override
@@ -15,7 +14,6 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-
   Gender selectedGender;
   int height = 60;
   int weight = 100;
@@ -40,10 +38,12 @@ class _InputPageState extends State<InputPage> {
                         selectedGender = Gender.male;
                       });
                     },
-                    color: selectedGender == Gender.male ? kActiveCardColour : kBottomContainerColour,
+                    color: selectedGender == Gender.male
+                        ? kActiveCardColour
+                        : kBottomContainerColour,
                     cardChild: genderWidget(
-                        icon: FontAwesomeIcons.mars,
-                        label: 'MALE',
+                      icon: FontAwesomeIcons.mars,
+                      label: 'MALE',
                     ),
                   ),
                 ),
@@ -54,7 +54,9 @@ class _InputPageState extends State<InputPage> {
                         selectedGender = Gender.female;
                       });
                     },
-                    color: selectedGender == Gender.female ? kActiveCardColour : kBottomContainerColour,
+                    color: selectedGender == Gender.female
+                        ? kActiveCardColour
+                        : kBottomContainerColour,
                     cardChild: genderWidget(
                       icon: FontAwesomeIcons.venus,
                       label: 'FEMALE',
@@ -83,8 +85,8 @@ class _InputPageState extends State<InputPage> {
                           textBaseline: TextBaseline.alphabetic,
                           children: [
                             Text(
-                            height.toString(),
-                            style: kWidgetTextStyle,
+                              height.toString(),
+                              style: kWidgetTextStyle,
                             ),
                             Text(
                               'in',
@@ -92,7 +94,6 @@ class _InputPageState extends State<InputPage> {
                             )
                           ],
                         ),
-                        
                         SliderTheme(
                           data: SliderTheme.of(context).copyWith(
                             activeTrackColor: Colors.white,
@@ -100,9 +101,9 @@ class _InputPageState extends State<InputPage> {
                             overlayColor: Color(0xFFEB1555),
                             inactiveTrackColor: Color(0xFF8D8E98),
                             thumbShape:
-                              RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                                RoundSliderThumbShape(enabledThumbRadius: 15.0),
                             overlayShape:
-                              RoundSliderOverlayShape(overlayRadius: 30.0),
+                                RoundSliderOverlayShape(overlayRadius: 30.0),
                           ),
                           child: Slider(
                             value: height.toDouble(),
@@ -154,12 +155,12 @@ class _InputPageState extends State<InputPage> {
                               width: 10.0,
                             ),
                             RoundIconButton(
-                                icon: FontAwesomeIcons.plus,
-                                onPressed: () {
-                                  setState(() {
-                                    weight++;
-                                  });
-                                },
+                              icon: FontAwesomeIcons.plus,
+                              onPressed: () {
+                                setState(() {
+                                  weight++;
+                                });
+                              },
                             ),
                           ],
                         ),
@@ -196,12 +197,12 @@ class _InputPageState extends State<InputPage> {
                               width: 10.0,
                             ),
                             RoundIconButton(
-                                icon: FontAwesomeIcons.plus,
-                                onPressed: () {
-                                  setState(() {
-                                    age++;
-                                  });
-                                },
+                              icon: FontAwesomeIcons.plus,
+                              onPressed: () {
+                                setState(() {
+                                  age++;
+                                });
+                              },
                             ),
                           ],
                         ),
@@ -212,20 +213,42 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: kInactiveCardColour,
-            margin: EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: kbottomContainerHeight,
-          )
+          BottomButton(
+            buttonTitle: 'CALCULATE',
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ResultsPage()));
+            },
+          ),
         ],
       ),
     );
   }
 }
 
-class RoundIconButton extends StatelessWidget {
+class BottomButton extends StatelessWidget {
+  BottomButton({@required this.onTap, @required this.buttonTitle});
 
+  final Function onTap;
+  final String buttonTitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        child: Center(child: Text(buttonTitle, style: kLargeButtonTextStyle)),
+        color: kInactiveCardColour,
+        margin: EdgeInsets.only(top: 10.0),
+        padding: EdgeInsets.only(bottom: 20.0),
+        width: double.infinity,
+        height: kbottomContainerHeight,
+      ),
+    );
+  }
+}
+
+class RoundIconButton extends StatelessWidget {
   RoundIconButton({@required this.icon, @required this.onPressed});
 
   final IconData icon;
@@ -234,15 +257,14 @@ class RoundIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
-      child: Icon(icon),
-      onPressed: onPressed,
-      elevation: 0.0,
-      constraints: BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
-      ),
-      shape: CircleBorder(),
-      fillColor: Color(0xFF4C4F5E)
-    );
+        child: Icon(icon),
+        onPressed: onPressed,
+        elevation: 0.0,
+        constraints: BoxConstraints.tightFor(
+          width: 56.0,
+          height: 56.0,
+        ),
+        shape: CircleBorder(),
+        fillColor: Color(0xFF4C4F5E));
   }
 }
